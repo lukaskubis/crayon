@@ -72,11 +72,11 @@ def indent(txt, spacing=4):
     return prefix(txt, ''.join([' ' for _ in range(spacing)]))
 
 
-def prefix(txt, prefix):
+def prefix(txt, pref):
     """
     Place a prefix in front of the text.
     """
-    return str(prefix) + txt
+    return str(pref) + txt
 
 
 def stylize(txt, **style):
@@ -118,27 +118,3 @@ def gray(value):
 
 class ColorError(Exception):
     pass
-
-# TODO: implement tests and print a test graphic here
-if __name__ == '__main__':
-    from time import sleep
-    for _ in range(2):
-        for r in range(6):
-            for g in range(6):
-                for b in range(6):
-                    txt = 'rgb{}'.format((r, g, b))
-                    c = {'fg': rgb(r, g, b)}
-                    s = {'bold': True, 'underline': True}
-                    printout(txt, color=c, end=' -> ')
-                    printout(txt + ' stylized', color=c, style=s, end=' -> ')
-                    c = {'bg': rgb(r, g, b)}
-                    printout('            ', color=c)
-                    sleep(0.05)
-
-    # for b in range(24):
-    #     txt = 'This is a gray{:02d} color.'.format((b))
-    #     c = {'fg': gray(b)}
-    #     printout(txt, color=c, end=' -> ')
-    #     c = {'bg': gray(b)}
-    #     printout('            ', color=c)
-    #     sleep(0.1)
