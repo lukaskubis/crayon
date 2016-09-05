@@ -31,6 +31,7 @@ def printout(*args, **kwargs):
     """
     Print function with extra options for formating text in terminals.
     """
+    # unpack parameters
     color = kwargs.pop('color', {})
     spacing = kwargs.pop('indent', 0)
     pref = kwargs.pop('prefix', '')
