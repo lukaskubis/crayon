@@ -3,4 +3,12 @@
 
 ![Imgur](http://i.imgur.com/LznDkYy.gif)
 
-Python utility for terminal output
+Python utility for defining different styles for terminal output.
+
+    pip install crayon
+
+To test your terminal output just launch the crayon module
+
+    python -m crayon
+
+Full documentation soon.

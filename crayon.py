@@ -119,3 +119,31 @@ def gray(value):
 
 class ColorError(Exception):
     pass
+
+
+if __name__ == '__main__':
+    # test terminal output by displaying all possible colors and styles
+
+    def print_line(txt, color):
+        style = {'bold':True, 'underline':True}
+        color_fg = {'fg':color}
+        color_bg = {'bg':color}
+        printout(txt, color=color_fg, end='')
+        printout(colorize(' -> ', color={}), end='')
+        printout(txt, color=color_fg, style=style, end='')
+        printout(colorize(' -> ', color={}), end='')
+        printout('        ', color=color_bg)
+
+    for color in COLORS:
+        txt = 'System color: {:2.0f}'.format(color)
+        print_line(txt, color)
+
+    for color in range(24):
+        txt = 'Gray color: {:2.0f}'.format(color)
+        print_line(txt, gray(color))
+
+    for r in range(6):
+        for g in range(6):
+            for b in range(6):
+                txt = 'rgb({},{},{})'.format(r, g, b)
+                print_line(txt, rgb(r, g, b))
