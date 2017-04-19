@@ -1,6 +1,6 @@
 from __future__ import print_function
 """
-Utilities for displaying text in terminals using styling, colors, indentation etc.
+Utilities for printing text to terminal using styling, colors, indentation etc.
 """
 
 # System color name constants.
@@ -23,47 +23,62 @@ COLORS = (
     WHITE,
 ) = range(16)
 
-BOLD = '\033[1m'
-UNDERLINE = '\033[4m'
+# styling constants
+_SET_BOLD = '\033[1m'
+_SET_UNDERLINE = '\033[4m'
+_SET_FG = '\x1b[38;5;{}m'
+_SET_BG = '\x1b[48;5;{}m'
+_STYLE_RESET = '\x1b[0m'
 
 
-def printout(*args, **kwargs):
+def printout(*args,color={}, **kwargs):
     """
     Print function with extra options for formating text in terminals.
     """
-    # unpack parameters
+
+    # TODO(Lukas): conflicts with function names
     color = kwargs.pop('color', {})
-    spacing = kwargs.pop('indent', 0)
-    pref = kwargs.pop('prefix', '')
-    suf = kwargs.pop('suffix', '')
     style = kwargs.pop('style', {})
+    prefx = kwargs.pop('prefix', '')
+    suffx = kwargs.pop('suffix', '')
+    ind = kwargs.pop('indent', 0)
 
-    # unwrap text from list of arguments and modify it
-    args = list(args)
-    args[0] = colorize(args[0], **color)
-    args[0] = stylize(args[0], **style)
-    args[0] = prefix(args[0], pref)
-    args[0] += str(suf)
-    args[0] = indent(args[0], spacing)
-    args = tuple(args)
-    print(*args, **kwargs)
+    print_args = []
+    for arg in args:
+        arg = str(arg)
+        arg = colorize(arg, **color)
+        arg = stylize(arg, **style)
+        arg = prefix(arg, prefx)
+        arg = indent(arg, ind)
+        arg += str(suffx)
+        print_args.append(arg)
+
+    print(*print_args, **kwargs)
 
 
-def colorize(txt, **color):
+def colorize(txt, fg=None, bg=None):
     """
     Print escape codes to set the terminal color.
 
     fg and bg are indices into the color palette for the foreground and
     background colors.
     """
-    if not color:
-        return txt
-    fg = color.pop('fg', None)
-    bg = color.pop('bg', None)
+
     setting = ''
-    setting += '\x1b[38;5;{}m'.format(fg) if fg else ''
-    setting += '\x1b[48;5;{}m'.format(bg) if bg else ''
-    return setting + txt + '\x1b[0m'
+    setting += _SET_FG.format(fg) if fg else ''
+    setting += _SET_BG.format(bg) if bg else ''
+    return setting + txt + _STYLE_RESET
+
+
+def stylize(txt, bold=False, underline=False):
+    """
+    Changes style of the text.
+    """
+
+    setting = ''
+    setting += _SET_BOLD if bold is True else ''
+    setting += _SET_UNDERLINE if underline is True else ''
+    return setting + txt + _STYLE_RESET
 
 
 def indent(txt, spacing=4):
@@ -79,21 +94,7 @@ def prefix(txt, pref):
     """
     return str(pref) + txt
 
-
-def stylize(txt, **style):
-    """
-    Changes style of the text.
-    """
-    if not style:
-        return txt
-    bold = style.pop('bold', None)
-    underline = style.pop('underline', None)
-    setting = ''
-    setting += '\033[1m' if bold else ''
-    setting += '\033[4m' if underline else ''
-    return setting + txt + '\033[0m'
-
-
+# Color value generators
 def rgb(red, green, blue):
     """
     Calculate the palette index of a color in the 6x6x6 color cube.
@@ -104,7 +105,6 @@ def rgb(red, green, blue):
         if value not in range(6):
             raise ColorError('Value must be within 0-5, was {}.'.format(value))
     return 16 + (red * 36) + (green * 6) + blue
-
 
 def gray(value):
     """

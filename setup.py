@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='crayon',
-      version='0.1.2',
+      version='0.2',
       description='Utility for styling terminal text output',
       url='https://github.com/lukaskubis/crayon',
       author='Lukas Kubis',
