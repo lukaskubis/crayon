@@ -67,7 +67,7 @@ def colorize(txt, fg=None, bg=None):
     setting = ''
     setting += _SET_FG.format(fg) if fg else ''
     setting += _SET_BG.format(bg) if bg else ''
-    return setting + txt + _STYLE_RESET
+    return setting + str(txt) + _STYLE_RESET
 
 
 def stylize(txt, bold=False, underline=False):
@@ -78,21 +78,21 @@ def stylize(txt, bold=False, underline=False):
     setting = ''
     setting += _SET_BOLD if bold is True else ''
     setting += _SET_UNDERLINE if underline is True else ''
-    return setting + txt + _STYLE_RESET
+    return setting + str(txt) + _STYLE_RESET
 
 
 def indent(txt, spacing=4):
     """
     Indent given text using custom spacing, default is set to 4.
     """
-    return prefix(txt, ''.join([' ' for _ in range(spacing)]))
+    return prefix(str(txt), ''.join([' ' for _ in range(spacing)]))
 
 
 def prefix(txt, pref):
     """
     Place a prefix in front of the text.
     """
-    return str(pref) + txt
+    return str(pref) + str(txt)
 
 # Color value generators
 def rgb(red, green, blue):
