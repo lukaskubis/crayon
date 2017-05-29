@@ -31,7 +31,7 @@ _SET_BG = '\x1b[48;5;{}m'
 _STYLE_RESET = '\x1b[0m'
 
 
-def printout(*args,color={}, **kwargs):
+def printout(*args, **kwargs):
     """
     Print function with extra options for formating text in terminals.
     """
@@ -129,9 +129,9 @@ if __name__ == '__main__':
         color_fg = {'fg':color}
         color_bg = {'bg':color}
         printout(txt, color=color_fg, end='')
-        printout(colorize(' -> ', color={}), end='')
+        printout(colorize(' -> '), end='')
         printout(txt, color=color_fg, style=style, end='')
-        printout(colorize(' -> ', color={}), end='')
+        printout(colorize(' -> '), end='')
         printout('        ', color=color_bg)
 
     for color in COLORS:
